@@ -1,0 +1,4 @@
+Default login is: 'root' with a password of 31337.
+From there users can be created. The PINs they need must be 4+ digits and can't be the same number
+4 or more times in a row.
+Once users have been added, they can begin checking out items.
