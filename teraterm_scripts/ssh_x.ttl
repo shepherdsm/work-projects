@@ -1,0 +1,12 @@
+include 'password_x.ttl'
+
+command = 'ssh '
+strconcat command host
+sendln command
+wait 'password: ' 'closed by foreign host'
+if result = 1 then
+	sendln password
+	wait '>'
+	include 'enable_x.ttl'
+	wait '#'
+endif

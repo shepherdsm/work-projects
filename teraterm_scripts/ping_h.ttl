@@ -1,0 +1,62 @@
+inputbox "IP Address to ping" "Target"
+ip = inputstr
+
+command = 'ping '
+strconcat command ip
+sendln command
+timeout = 11 ; Wait 11 seconds for a result or pings * 2 - 1 for the ping
+waitln "Success rate"
+
+if result then		
+	; Check results of simple ping test
+	strmatch inputstr "Success rate is (\d+)"
+	str2int temp groupmatchstr1
+	
+	if temp > 0 then
+		; Move on with final round of ping test
+		
+		ping = 100
+		size = 500
+		inc = 500
+		total_rec = 0
+		total_sent = 0
+		success = 0
+		count = 4
+		match_ping = 'percent \((\d+)/(\d+)\)'
+		
+		for i 1 count
+			timeout = ping * 2 - 1
+			sendln 'ping'
+			wait ':'
+			sendln
+			wait ':'
+			sendln ip
+			wait ':'
+			int2str temp_str ping
+			sendln temp_str
+			wait ':'
+			int2str temp_str size
+			sendln temp_str
+			wait ':'
+			sendln #10#10
+		
+			waitln 'Success rate is'
+			strmatch inputstr match_ping
+			str2int temp groupmatchstr1 ; # Received back
+			total_rec = total_rec + temp
+			str2int temp groupmatchstr2 ; # Total sent
+			total_sent = total_sent + temp
+			
+			ping = size
+			size = size + inc
+		next
+		
+		sprintf 'Total Sent is: %d\nTotal Replies are: %d\nSuccess Rate is: %d%%' total_sent total_rec ((total_rec / total_sent) * 100)
+		messagebox inputstr "Results"
+		
+	else
+		messagebox "You got 0 replies back from that host. I would not recommend trying to do an extended ping test." "Failure"
+	endif
+else
+	messagebox "The pinging has failed for some reason. Check your IP." "Failure"
+endif

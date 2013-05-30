@@ -1,0 +1,6 @@
+en_user = 'enable'
+en_pass = ''
+getpassword 'en.dat' en_user en_pass
+sendln "en"
+wait "pass"
+sendln en_pass

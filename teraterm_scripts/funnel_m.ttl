@@ -1,0 +1,17 @@
+ssh_string = 'x.x.x.x' ; Funnel
+user = 'shephers'
+
+setenv 'USER' user
+
+include 'password_x.ttl'
+	
+strconcat ssh_string ':22 /ssh /auth=password /user='
+strconcat ssh_string user ; User received from password.ttl
+strconcat ssh_string ' /passwd='
+strconcat ssh_string password ; Password received from password.ttl
+	
+connect ssh_string
+
+wait '>'
+include 'enable_x.ttl'
+wait '#'

@@ -1,0 +1,27 @@
+ifdefined user
+if result = 0 getenv 'USER' user
+
+inputbox "Please enter IP to connect to" "IP"
+toupper host inputstr
+
+call to_funnel ; Make sure we're in funnel
+
+; Don't let them log into funnel over and over... ._.
+strcompare 'FUNNEL' host
+if result != 0 include 'ssh_x.ttl'
+
+end
+
+:to_funnel
+	while 1
+		include 'get_host_x.ttl'
+		strcompare 'FUNNEL' cur_host
+		if result = 0 then
+			break
+		else
+			sendln 'exit'
+			sendln #10
+			wait '>' '#'
+		endif
+	endwhile
+return

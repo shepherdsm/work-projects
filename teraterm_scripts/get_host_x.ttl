@@ -1,0 +1,4 @@
+sendln #10
+waitln '#' '>'
+strmatch inputstr "(.*)(#|>)"
+cur_host = groupmatchstr1
